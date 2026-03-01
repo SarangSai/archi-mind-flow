@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import {
-  MessageSquare, FileText, ClipboardList, Building2, Plug, Settings, LogOut,
+  MessageSquare, FileText, ClipboardList, Building2, Plug, Settings, Wrench,
   ChevronLeft, ChevronRight, Bell, Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -18,7 +18,7 @@ const navItems = [
 
 export default function ManagerLayout() {
   const [collapsed, setCollapsed] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, switchRole } = useAuth();
   const location = useLocation();
 
   return (
@@ -71,11 +71,11 @@ export default function ManagerLayout() {
             </div>
           )}
           <button
-            onClick={logout}
-            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-sidebar-muted hover:text-destructive hover:bg-sidebar-accent/50 transition-colors w-full"
+            onClick={() => switchRole('technician')}
+            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors w-full"
           >
-            <LogOut className="h-4 w-4 shrink-0" />
-            {!collapsed && <span>Logout</span>}
+            <Wrench className="h-4 w-4 shrink-0" />
+            {!collapsed && <span>Switch to Technician</span>}
           </button>
         </div>
 
