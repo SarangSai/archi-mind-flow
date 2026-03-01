@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   MessageSquare, FileText, ClipboardList, Building2, Plug, Settings, Wrench,
@@ -8,18 +8,19 @@ import {
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { title: 'AI Chat', path: '/', icon: MessageSquare },
-  { title: 'Work Orders', path: '/work-orders', icon: ClipboardList },
-  { title: 'Documents', path: '/documents', icon: FileText },
-  { title: 'Assets', path: '/assets', icon: Building2 },
-  { title: 'Integrations', path: '/integrations', icon: Plug },
-  { title: 'Settings', path: '/settings', icon: Settings },
+  { title: 'AI Chat', path: '/manager', icon: MessageSquare },
+  { title: 'Work Orders', path: '/manager/work-orders', icon: ClipboardList },
+  { title: 'Documents', path: '/manager/documents', icon: FileText },
+  { title: 'Assets', path: '/manager/assets', icon: Building2 },
+  { title: 'Integrations', path: '/manager/integrations', icon: Plug },
+  { title: 'Settings', path: '/manager/settings', icon: Settings },
 ];
 
 export default function ManagerLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const { user, switchRole } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className="flex min-h-screen w-full">
@@ -71,7 +72,11 @@ export default function ManagerLayout() {
             </div>
           )}
           <button
-            onClick={() => switchRole('technician')}
+            onClick={() => {
+              switchRole('technician');
+              const segment = location.pathname.replace('/manager', '');
+              navigate(`/technician${segment || ''}`);
+            }}
             className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors w-full"
           >
             <Wrench className="h-4 w-4 shrink-0" />

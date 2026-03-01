@@ -1,18 +1,19 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { MessageSquare, ClipboardList, Building2, Settings, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const tabs = [
-  { title: 'Chat', path: '/', icon: MessageSquare },
-  { title: 'Orders', path: '/work-orders', icon: ClipboardList },
-  { title: 'Assets', path: '/assets', icon: Building2 },
-  { title: 'Settings', path: '/settings', icon: Settings },
+  { title: 'Chat', path: '/technician', icon: MessageSquare },
+  { title: 'Orders', path: '/technician/work-orders', icon: ClipboardList },
+  { title: 'Assets', path: '/technician/assets', icon: Building2 },
+  { title: 'Settings', path: '/technician/settings', icon: Settings },
 ];
 
 export default function TechnicianLayout() {
   const { user, switchRole } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col min-h-screen w-full">
@@ -28,7 +29,11 @@ export default function TechnicianLayout() {
             <p className="text-xs text-muted-foreground">Technician</p>
           </div>
           <button
-            onClick={() => switchRole('manager')}
+            onClick={() => {
+              switchRole('manager');
+              const segment = location.pathname.replace('/technician', '');
+              navigate(`/manager${segment || ''}`);
+            }}
             className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-md px-2 py-1 transition-colors"
           >
             Switch to Manager
