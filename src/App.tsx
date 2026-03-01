@@ -24,7 +24,7 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            {/* Login temporarily disabled */}
             <Route element={<AppLayout />}>
               <Route path="/" element={<AIChat />} />
               <Route path="/work-orders" element={<WorkOrders />} />

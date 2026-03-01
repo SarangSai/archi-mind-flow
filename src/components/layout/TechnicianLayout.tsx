@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { MessageSquare, ClipboardList, Building2, Settings, Sparkles, LogOut } from 'lucide-react';
+import { MessageSquare, ClipboardList, Building2, Settings, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const tabs = [
@@ -11,7 +11,7 @@ const tabs = [
 ];
 
 export default function TechnicianLayout() {
-  const { user, logout } = useAuth();
+  const { user, switchRole } = useAuth();
   const location = useLocation();
 
   return (
@@ -27,8 +27,11 @@ export default function TechnicianLayout() {
             <p className="text-sm font-medium text-foreground">{user?.name}</p>
             <p className="text-xs text-muted-foreground">Technician</p>
           </div>
-          <button onClick={logout} className="text-muted-foreground hover:text-destructive transition-colors">
-            <LogOut className="h-4 w-4" />
+          <button
+            onClick={() => switchRole('manager')}
+            className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-md px-2 py-1 transition-colors"
+          >
+            Switch to Manager
           </button>
         </div>
       </header>

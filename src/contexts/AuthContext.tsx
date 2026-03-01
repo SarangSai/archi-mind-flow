@@ -13,6 +13,7 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, role: UserRole) => void;
   logout: () => void;
+  switchRole: (role: UserRole) => void;
   isAuthenticated: boolean;
 }
 
@@ -46,8 +47,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('architech_user');
   };
 
+  const switchRole = (role: UserRole) => {
+    if (user) {
+      const updated = { ...user, role };
+      setUser(updated);
+      localStorage.setItem('architech_user', JSON.stringify(updated));
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, login, logout, switchRole, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );
