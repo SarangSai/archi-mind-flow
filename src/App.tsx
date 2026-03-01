@@ -16,6 +16,13 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Redirect root to role-based path
+const RoleRedirect = () => {
+  const saved = localStorage.getItem('architech_user');
+  const role = saved ? JSON.parse(saved).role : 'manager';
+  return <Navigate to={`/${role}`} replace />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -26,12 +33,17 @@ const App = () => (
           <Routes>
             {/* Login temporarily disabled */}
             <Route element={<AppLayout />}>
-              <Route path="/" element={<AIChat />} />
-              <Route path="/work-orders" element={<WorkOrders />} />
-              <Route path="/documents" element={<Documents />} />
-              <Route path="/assets" element={<Assets />} />
-              <Route path="/integrations" element={<Integrations />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/manager" element={<AIChat />} />
+              <Route path="/manager/work-orders" element={<WorkOrders />} />
+              <Route path="/manager/documents" element={<Documents />} />
+              <Route path="/manager/assets" element={<Assets />} />
+              <Route path="/manager/integrations" element={<Integrations />} />
+              <Route path="/manager/settings" element={<Settings />} />
+              <Route path="/technician" element={<AIChat />} />
+              <Route path="/technician/work-orders" element={<WorkOrders />} />
+              <Route path="/technician/assets" element={<Assets />} />
+              <Route path="/technician/settings" element={<Settings />} />
+              <Route path="/" element={<RoleRedirect />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
