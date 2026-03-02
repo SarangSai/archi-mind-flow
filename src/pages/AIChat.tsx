@@ -105,13 +105,16 @@ export default function AIChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const MAX_INPUT_LENGTH = 500;
+
   const sendMessage = async (text: string) => {
-    if (!text.trim()) return;
+    const trimmed = text.trim();
+    if (!trimmed || trimmed.length > MAX_INPUT_LENGTH) return;
 
     const userMsg: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: text,
+      content: trimmed,
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, userMsg]);
@@ -290,9 +293,10 @@ export default function AIChat() {
           <div className="flex-1 relative">
             <input
               value={input}
-              onChange={e => setInput(e.target.value)}
+              onChange={e => setInput(e.target.value.slice(0, MAX_INPUT_LENGTH))}
               placeholder="Ask ArchiTech…"
               disabled={isLoading}
+              maxLength={MAX_INPUT_LENGTH}
               className="w-full h-11 px-4 pr-12 rounded-lg border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
             />
           </div>

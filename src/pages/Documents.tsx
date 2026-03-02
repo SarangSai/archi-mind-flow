@@ -67,7 +67,8 @@ export default function Documents() {
           <Input
             placeholder="Search documents…"
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value.slice(0, 100))}
+            maxLength={100}
             className="pl-9"
           />
         </div>
