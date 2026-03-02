@@ -19,8 +19,7 @@ const queryClient = new QueryClient();
 // Redirect root to role-based path
 const RoleRedirect = () => {
   const saved = localStorage.getItem('architech_user');
-  const role = saved ? JSON.parse(saved).role : 'manager';
-  return <Navigate to={`/${role}`} replace />;
+  return <Navigate to="/technician" replace />;
 };
 
 const App = () => (

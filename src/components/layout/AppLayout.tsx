@@ -9,12 +9,11 @@ export default function AppLayout() {
   // Auto-login as manager if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-      login('demo@architech.ai', 'demo', 'manager');
+      login('demo@architech.ai', 'demo', 'technician');
     }
   }, [isAuthenticated, login]);
 
   if (!isAuthenticated) return null;
 
-  if (user?.role === 'technician') return <TechnicianLayout />;
-  return <ManagerLayout />;
+  return <TechnicianLayout />;
 }

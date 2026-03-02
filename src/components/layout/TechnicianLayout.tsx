@@ -29,12 +29,9 @@ export default function TechnicianLayout() {
             <p className="text-xs text-muted-foreground">Technician</p>
           </div>
           <button
-            onClick={() => {
-              switchRole('manager');
-              const segment = location.pathname.replace('/technician', '');
-              navigate(`/manager${segment || ''}`);
-            }}
-            className="text-xs text-muted-foreground hover:text-foreground border border-border rounded-md px-2 py-1 transition-colors"
+            disabled
+            className="text-xs text-muted-foreground/50 border border-border/50 rounded-md px-2 py-1 cursor-not-allowed"
+            title="Manager view coming soon"
           >
             Switch to Manager
           </button>
