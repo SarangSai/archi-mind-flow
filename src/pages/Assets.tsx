@@ -199,7 +199,7 @@ export default function Assets() {
               <h2 className="font-display font-bold text-lg">{selectedBuilding.name} Equipment</h2>
               <div className="relative flex-1 max-w-xs">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Search equipment…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9 h-9" />
+                <Input placeholder="Search equipment…" value={search} onChange={e => setSearch(e.target.value.slice(0, 100))} maxLength={100} className="pl-9 h-9" />
               </div>
             </div>
 
@@ -280,7 +280,7 @@ export default function Assets() {
             <h2 className="font-display font-bold text-lg mb-3">Asset Lookup</h2>
             <div className="relative mb-4">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search assets…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9" />
+              <Input placeholder="Search assets…" value={search} onChange={e => setSearch(e.target.value.slice(0, 100))} maxLength={100} className="pl-9" />
             </div>
             <div className="space-y-2">
               {buildings.flatMap(b => b.systems.flatMap(s => s.equipment)).filter(e =>

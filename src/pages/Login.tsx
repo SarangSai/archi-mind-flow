@@ -7,6 +7,12 @@ import { Label } from '@/components/ui/label';
 import { Sparkles, Building2, Wrench, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { z } from 'zod';
+
+const loginSchema = z.object({
+  email: z.string().trim().email('Please enter a valid email address').max(255, 'Email is too long'),
+  password: z.string().min(1, 'Password is required').max(128, 'Password is too long'),
+});
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -17,12 +23,23 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const result = loginSchema.safeParse({ email, password });
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors({
+        email: fieldErrors.email?.[0],
+        password: fieldErrors.password?.[0],
+      });
+      return;
+    }
+    setErrors({});
     setIsLoading(true);
-    // Simulate auth delay
     await new Promise(r => setTimeout(r, 800));
-    login(email, password, role);
+    login(result.data.email, result.data.password, role);
     setIsLoading(false);
     navigate('/');
   };
@@ -93,10 +110,12 @@ export default function Login() {
                   type="email"
                   placeholder="name@company.com"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={e => { setEmail(e.target.value); setErrors(prev => ({ ...prev, email: undefined })); }}
                   required
-                  className="h-11"
+                  maxLength={255}
+                  className={cn("h-11", errors.email && "border-destructive")}
                 />
+                {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium">Password</Label>
@@ -106,10 +125,12 @@ export default function Login() {
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={e => { setPassword(e.target.value); setErrors(prev => ({ ...prev, password: undefined })); }}
                     required
-                    className="h-11 pr-10"
+                    maxLength={128}
+                    className={cn("h-11 pr-10", errors.password && "border-destructive")}
                   />
+                  {errors.password && <p className="text-xs text-destructive mt-1">{errors.password}</p>}
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
