@@ -140,10 +140,9 @@ export default function Assets() {
 
       <div className="flex gap-6">
         {/* Buildings panel */}
-        <div className={cn("shrink-0", isTechnician ? "w-full" : "w-56")}>
-          <h2 className="font-display font-bold text-lg mb-3">
-            {isTechnician ? 'Asset Lookup' : 'Buildings'}
-          </h2>
+      {!isTechnician && (
+      <div className="shrink-0 w-56">
+          <h2 className="font-display font-bold text-lg mb-3">Buildings</h2>
 
           {!isTechnician && (
             <div className="space-y-1 mb-4">
@@ -191,6 +190,7 @@ export default function Assets() {
             </div>
           )}
         </div>
+      )}
 
         {/* Equipment list + detail */}
         {!isTechnician && (
@@ -276,7 +276,8 @@ export default function Assets() {
 
         {/* Technician: simple list */}
         {isTechnician && (
-          <div className="flex-1">
+          <div className="w-full">
+            <h2 className="font-display font-bold text-lg mb-3">Asset Lookup</h2>
             <div className="relative mb-4">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input placeholder="Search assets…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9" />
